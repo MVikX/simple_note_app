@@ -1,0 +1,71 @@
+# Flutter & Dart related
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+.pub-cache/
+.pub/
+build/
+**/build/
+*.lock
+
+# Generated docs
+doc/api/
+
+# IntelliJ & Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+.android/
+.metadata
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Linux
+*.swp
+
+# Windows
+Thumbs.db
+
+# iOS & Xcode
+ios/Flutter/.last_build_id
+ios/.generated/
+ios/Pods/
+ios/Runner.xcworkspace/
+xcuserdata/
+DerivedData/
+*.xcuserstate
+
+# Android
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+*.jks
+
+# Symbolication
+app.*.symbols
+app.*.map.json
+
+# Crashlytics or Firebase
+firebase_app_id_file.json
+
+# Coverage
+coverage/
+
+# Logs
+*.log
+
+# Temporary
+*.tmp
+*.temp
+
+# Others
+*.bak
+*.orig
