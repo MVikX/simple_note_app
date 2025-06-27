@@ -1,4 +1,4 @@
-import 'package:first_flutter/screen/home_screen.dart';
+import 'package:first_flutter/screen/home/home_screen.dart';
 import 'package:first_flutter/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';

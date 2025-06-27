@@ -10,5 +10,16 @@ class Note extends HiveObject {
   @HiveField(1)
   String content;
 
-  Note({required this.title, required this.content});
+  @HiveField(2)
+  bool isFavorite;
+
+  @HiveField(3)
+  bool isMarked;
+
+  Note({
+    required this.title,
+    required this.content,
+    this.isFavorite = false,
+    this.isMarked = false,
+  });
 }
