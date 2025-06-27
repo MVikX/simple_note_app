@@ -1,37 +1,14 @@
 import 'package:flutter/material.dart';
+import 'swipe_action_constants.dart';
 
-// animation settings
-const _dismissDuration = Duration(milliseconds: 700);
-
-const _swipeDismissOffset = Offset(-2.0, 0.0);
-const _swipeVelocityThreshold = 250.0;
-
-// animation scale values
-const _scaleStart = 1.0;
-const _scaleEnd = 0.5;
-
-// animation opacity values
-const _opacityStart = 1.0;
-const _opacityEnd = 0.0;
-
-// clipper values
-const _bezierMultiplier = 1.2;
-const _clipVerticalCenter = 0.5;
-
-// clipping base values
-const _clipStartX = 0.0;
-const _clipStartY = 0.0;
-const _clipEndFactor = 1.0;
-
-
-class DropletDismissible extends StatefulWidget {
+class SwipeActionCard extends StatefulWidget {
   final Widget child;
   final VoidCallback onDismissed;
   final VoidCallback onMarked;
   final VoidCallback onTap;
   final Key key;
 
-  const DropletDismissible({
+  const SwipeActionCard({
     required this.child,
     required this.onDismissed,
     required this.onMarked,
@@ -40,10 +17,10 @@ class DropletDismissible extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DropletDismissible> createState() => _DropletDismissibleState();
+  State<SwipeActionCard> createState() => _SwipeActionCardState();
 }
 
-class _DropletDismissibleState extends State<DropletDismissible>
+class _SwipeActionCardState extends State<SwipeActionCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
@@ -58,34 +35,23 @@ class _DropletDismissibleState extends State<DropletDismissible>
 
     _controller = AnimationController(
       vsync: this,
-      duration: _dismissDuration,
+      duration: swipeDismissDuration,
     );
 
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: _swipeDismissOffset,
-    ).animate(CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-    ));
+      end: swipeDismissOffset,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     _scaleAnimation = Tween<double>(
-        begin: _scaleStart,
-        end: _scaleEnd,
-    )
-        .animate(CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-    ));
+      begin: scaleStart,
+      end: scaleEnd,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _opacityAnimation = Tween<double>(
-        begin: _opacityStart,
-        end: _opacityEnd,
-    )
-        .animate(CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeIn,
-    ));
+      begin: opacityStart,
+      end: opacityEnd,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
   }
 
   void _handleDismiss() async {
@@ -107,9 +73,9 @@ class _DropletDismissibleState extends State<DropletDismissible>
       onHorizontalDragEnd: (details) {
         if (details.primaryVelocity == null) return;
 
-        if (details.primaryVelocity! < -_swipeVelocityThreshold) {
+        if (details.primaryVelocity! < -swipeVelocityThreshold) {
           _handleDismiss();
-        } else if (details.primaryVelocity! > _swipeVelocityThreshold) {
+        } else if (details.primaryVelocity! > swipeVelocityThreshold) {
           _handleMark();
         }
       },
@@ -123,7 +89,7 @@ class _DropletDismissibleState extends State<DropletDismissible>
               child: FractionalTranslation(
                 translation: _offsetAnimation.value,
                 child: ClipPath(
-                  clipper: DropletClipper(progress: _controller.value),
+                  clipper: SwipeClipper(progress: _controller.value),
                   child: child,
                 ),
               ),
@@ -142,21 +108,21 @@ class _DropletDismissibleState extends State<DropletDismissible>
   }
 }
 
-class DropletClipper extends CustomClipper<Path> {
+class SwipeClipper extends CustomClipper<Path> {
   final double progress;
 
-  DropletClipper({required this.progress});
+  SwipeClipper({required this.progress});
 
   @override
   Path getClip(Size size) {
     final path = Path();
 
-    path.moveTo(_clipStartX, _clipStartY);
-    path.lineTo(size.width * (_clipEndFactor - progress), _clipStartY);
+    path.moveTo(clipStartX, clipStartY);
+    path.lineTo(size.width * (clipEndFactor - progress), clipStartY);
     path.quadraticBezierTo(
-      size.width * (_clipEndFactor - progress * _bezierMultiplier),
-      size.height * _clipVerticalCenter,
-      size.width * (_clipEndFactor - progress),
+      size.width * (clipEndFactor - progress * bezierMultiplier),
+      size.height * clipVerticalCenter,
+      size.width * (clipEndFactor - progress),
       size.height,
     );
     path.lineTo(0, size.height);
@@ -166,6 +132,6 @@ class DropletClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(DropletClipper oldClipper) =>
+  bool shouldReclip(SwipeClipper oldClipper) =>
       oldClipper.progress != progress;
 }
